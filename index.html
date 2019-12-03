@@ -55,6 +55,9 @@
         // correct dashes
         text = text.replace(/ - /g, " — ")
           .replace(/ – /g, " — ");
+        // correct ellipses
+        text = text.replace(/\.\.\./g, "…")
+          .replace(/\.\./g, ".");
         // replace with corrected text
         textbox.property("value", text);
       }
