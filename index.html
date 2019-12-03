@@ -42,22 +42,26 @@
     <script>
       textbox = d3.select("#textbox");
       function fixText() {
-        text = textbox.property("value");
-        // correct non-breaking spaces
-        text = text.replace(/ /g, " ");
-        // trim text and remove double spaces
-        text = text.replace(/  /g, " ");
-        // correct quotes and apostrophes
-        text = text.replace(/`/g, "\'")
-          .replace(/’/g, "\'")
-          .replace(/“/g, "\"")
-          .replace(/“/g, "\"");
-        // correct dashes
-        text = text.replace(/ - /g, " — ")
-          .replace(/ – /g, " — ");
-        // correct ellipses
-        text = text.replace(/\.\.\./g, "…")
-          .replace(/\.\./g, ".");
+        text = textbox.property("value")
+          .split("\n");
+        text.forEach(function(line) {
+          // correct non-breaking spaces
+          line = line.replace(/ /g, " ")
+          // trim text and remove double spaces
+            .replace(/  /g, " ")
+          // correct quotes and apostrophes
+            .replace(/`/g, "\'")
+            .replace(/’/g, "\'")
+            .replace(/“/g, "\"")
+            .replace(/“/g, "\"")
+          // correct dashes
+            .replace(/ - /g, " — ")
+            .replace(/ – /g, " — ")
+          // correct ellipses
+            .replace(/\.\.\./g, "…")
+            .replace(/\.\./g, ".");
+        }
+        text = text.join("\n");
         // replace with corrected text
         textbox.property("value", text);
       }
