@@ -1,0 +1,60 @@
+/* ABC regular */
+@font-face {
+  font-family: "ABC Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: local("ABC Sans"),
+       local("ABC-regular"),
+       url("./resources/abcsans-regular.woff2"),
+       format("woff2")
+}
+:root {
+  font-size: 1em;
+  font-family: "ABC Sans", sans-serif;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #EFEFEF;
+}
+h1, p, ul, textarea {
+  margin: 1rem 0 0 0;
+}
+h1 {
+  font-size: 1.5rem;
+}
+p {
+  text-align: center;
+}
+#markus {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+a {
+  color: #007D99;
+  text-decoration: none;
+}
+a:hover {
+  color: #C44B00;
+}
+#container {
+  width: 75%;
+  max-width: 700px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+#textbox {
+  vertical-align: top;
+  outline: none;
+  font-family: "ABC Sans", sans-serif;
+  color: darkslategrey;
+  width: 95%;
+  height: 250px;
+  padding: 1rem;
+  background-color: #EFEFEF;
+}
