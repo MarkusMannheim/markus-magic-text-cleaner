@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <!-- fonts first! -->
-    <link rel="preload" as="font" type="font/woff2" href="./resources/abcsans-regular.woff2" crossorigin>
     <meta charset="utf-8">
     <title>Markus's Magic Text Cleaner™</title>
     <meta name="description" content="The best text cleaner money can buy, if you're an ABC digital producer.">
     <meta name="keywords" content="text, cleaner, clean, abc">
     <meta name="author" content="Markus Mannheim">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- for sharing -->
     <meta property="og:title" content="Markus's Magic Text Cleaner">
     <meta property="og:description" content="The best text cleaner money can buy, if you're an ABC digital producer.">
@@ -18,16 +17,19 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:site" content="@MarkusMannheim">
     <meta property="twitter:creator" content="@MarkusMannheim">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <!-- scripts and styles -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <link href="./resources/style.css" rel="stylesheet">
     <link href="./resources/favIcon.png" rel="icon">
   </head>
+
   <body>
     <!-- Initial page layout -->
     <div id="container">
       <img id="markus" src="./resources/markus.jpg">
       <h1>Markus's Magic Text Cleaner™</h1>
-      <p>This amazing text cleaner takes your filthy, corrupted jumble of characters and transforms it into clean copy worthy of the <a href="https://www.abc.net.au/news">ABC News website</a>. It improves your slop by replacing:</p>
+      <p>This amazing tool takes your corrupted jumble of characters and transforms it into clean copy worthy of <a href="https://www.abc.net.au/news">ABC News</a>. It improves your slop by replacing:</p>
       <ul>
         <li>non-breaking spaces with spaces;</li>
         <li>double spaces with single spaces;</li>
@@ -36,11 +38,29 @@
         <li>dashes and en dashes with em dashes; and</li>
         <li>series of periods with ellipses.</li>
       </ul>
-      <p>Paste your rubbish below and it will transform magically into dessert.</p>
-      <textarea id="textbox" placeholder="Your broken words go here." onkeyup="fixText()"></textarea>
+      <p>Paste your rubbish below, press 'make magic' and watch it transform into dessert.</p>
+      <textarea id="textbox" placeholder="Your broken words go here."></textarea>
+      <button onclick="fixText()">MAKE MAGIC</button>
     </div>
+
     <script>
+      // establish elements
+      container = d3.select("#container");
       textbox = d3.select("#textbox");
+
+      // set width of text area
+      windowResize();
+
+      // if user resizes window ...
+      window.addEventListener("resize", windowResize);
+
+      function windowResize() {
+        let width = parseFloat(d3.select("#container").style("width"));
+        textbox.style("width", (width - 32) + "px");
+        console.log(width);
+      }
+
+      // The cleaner!
       function fixText() {
         text = textbox.property("value");
         // correct non-breaking spaces
@@ -51,7 +71,7 @@
         text = text.replace(/`/g, "\'")
           .replace(/’/g, "\'")
           .replace(/“/g, "\"")
-          .replace(/“/g, "\"");
+          .replace(/”/g, "\"");
         // correct dashes
         text = text.replace(/ - /g, " — ")
           .replace(/ – /g, " — ");
