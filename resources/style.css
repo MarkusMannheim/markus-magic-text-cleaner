@@ -1,27 +1,50 @@
-/* ABC regular */
+/* ABC fonts */
 @font-face {
-  font-family: "ABC Sans";
+  font-family: 'ABCSans Regular';
   font-style: normal;
-  font-weight: 400;
-  src: local("ABC Sans"),
-       local("ABC-regular"),
-       url("./resources/abcsans-regular.woff2"),
-       format("woff2")
+  font-weight: normal;
+  src: local('ABCSans Regular'), url('./fonts/abcsans-regular.woff') format('woff');
 }
+@font-face {
+  font-family: 'ABCSans RegularItalic';
+  font-style: normal;
+  font-weight: normal;
+  src: local('ABCSans RegularItalic'), url('./fonts/abcsans-regularitalic.woff') format('woff');
+}
+@font-face {
+  font-family: 'ABCSans Light';
+  font-style: normal;
+  font-weight: normal;
+  src: local('ABCSans Light'), url('./fonts/abcsans-light.woff') format('woff');
+}
+@font-face {
+  font-family: 'ABCSans Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('ABCSans Bold'), url('./fonts/abcsans-bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'ABCSans Black';
+  font-style: normal;
+  font-weight: normal;
+  src: local('ABCSans Black'), url('./fonts/abcsans-black.woff') format('woff');
+}
+
 :root {
-  font-size: 1em;
-  font-family: "ABC Sans", sans-serif;
+  font-size: .9em;
+  font-family: "ABCSans Regular";
 }
 body {
   margin: 0;
   padding: 0;
   background-color: #EFEFEF;
 }
-h1, p, ul, textarea {
+h1, p, ul, textarea, button {
   margin: 1rem 0 0 0;
 }
 h1 {
-  font-size: 1.5rem;
+  font-family: "ABCSans Bold";
+  font-size: 1.25rem;
 }
 h1, p {
   text-align: center;
@@ -31,12 +54,12 @@ h1, p {
   height: 100px;
   border-radius: 50%;
 }
-a {
+a, #magic {
   color: #007D99;
   text-decoration: none;
 }
 a:hover {
-  color: #C44B00;
+  color: #FFB300;
 }
 #container {
   width: 75%;
@@ -51,10 +74,26 @@ a:hover {
 #textbox {
   vertical-align: top;
   outline: none;
-  font-family: "ABC Sans", sans-serif;
+  font-family: "ABCSans Regular";
   color: darkslategrey;
-  width: 95%;
-  height: 400px;
+  height: 300px;
   padding: 1rem;
   background-color: #EFEFEF;
+}
+button {
+  font-family: "ABCSans Bold";
+  font-size: 1.25rem;
+  background-color:#007D99;
+  border: none;
+  color: white;
+  box-shadow: 2px 2px 5px black;
+  border-radius: 10px;
+  outline: none;
+}
+button:hover {
+  background-color:#FFB300;
+}
+a {
+  color: #007D99;
+  text-decoration: none;
 }
