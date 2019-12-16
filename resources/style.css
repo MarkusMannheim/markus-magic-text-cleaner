@@ -39,7 +39,7 @@ body {
   padding: 0;
   background-color: #EFEFEF;
 }
-h1, p, ul, textarea, button {
+h1, p, ul, #textbox, button {
   margin: 1rem 0 0 0;
 }
 h1 {
@@ -63,7 +63,7 @@ a:hover {
 }
 #container {
   width: 75%;
-  max-width: 700px;
+  max-width: 750px;
   margin: 1rem auto;
   padding: 1rem;
   background-color: white;
@@ -79,6 +79,14 @@ a:hover {
   height: 300px;
   padding: 1rem;
   background-color: #EFEFEF;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+#textbox * {
+  text-align: left;
+}
+#textbox p:first-child {
+  margin: 0;
 }
 button {
   font-family: "ABCSans Bold";
@@ -97,3 +105,40 @@ a {
   color: #007D99;
   text-decoration: none;
 }
+#note {
+  position: fixed;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  color: slategrey;
+  font-size: .85rem;
+}
+#float {
+  position: absolute;
+  background-color: #007D99;
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 2px 2px 20px black;
+  color: white;
+  display: flex;
+  opacity: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -87.5px;
+  width: 175px;
+  height: 175px;
+  pointer-events: none;
+}
+#float svg {
+  fill: white;
+  width: 100px;
+  height: 100px;
+}
+#float p {
+  font-family: "ABCSans Bold";
+  font-size: 1.25rem;
+}
+#float:hover {
+  background-color: #FFB300;
+ }

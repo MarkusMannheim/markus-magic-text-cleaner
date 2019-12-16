@@ -29,58 +29,137 @@
     <div id="container">
       <img id="markus" src="./resources/markus.jpg">
       <h1>Markus's Magic Text Cleaner™</h1>
-      <p>This amazing tool takes your corrupted jumble of characters and transforms it into clean copy worthy of <a href="https://www.abc.net.au/news">ABC News</a>. It improves your slop by replacing:</p>
+      <p>Give me your corrupt jumble of characters and I will give you clean copy worthy of <a href="https://www.abc.net.au/news">ABC News</a>. This amazing tool improves your slop by fixing:</p>
       <ul>
-        <li>non-breaking spaces with spaces;</li>
-        <li>double spaces with single spaces;</li>
-        <li>curly quotes with straight quotes;</li>
-        <li>apostrophes with straight single quotes;</li>
-        <li>dashes and en dashes with em dashes; and</li>
-        <li>series of periods with ellipses.</li>
+        <li>non-breaking spaces;</li>
+        <li>double spaces;</li>
+        <li>curly quotes;</li>
+        <li>curly apostrophes;</li>
+        <li>incorrect dashes; and</li>
+        <li>incorrect ellipses.</li>
       </ul>
-      <p>Paste your rubbish below, press 'make magic' and watch it transform into dessert.</p>
-      <textarea id="textbox" placeholder="Your broken words go here."></textarea>
+      <p>Paste your broken words below, press 'make magic' and watch them transform into dessert.</p>
+      <div id="textbox" contenteditable=true></div>
       <button onclick="fixText()">MAKE MAGIC</button>
     </div>
-
+    <p id="note"><strong>Note:</strong> Amazing as it is, the Magic Text Cleaner™ remains in development. <a href="mailto:mannheim.markus@abc.net.au">Let Markus know</a> about bugs or how to make it better.</p>
     <script>
       // establish elements
       container = d3.select("#container");
       textbox = d3.select("#textbox");
+      textbox.node()
+        .focus();
 
       // set width of text area
       windowResize();
 
       // if user resizes window ...
       window.addEventListener("resize", windowResize);
-
       function windowResize() {
         let width = parseFloat(d3.select("#container").style("width"));
         textbox.style("width", (width - 32) + "px");
-        console.log(width);
       }
 
       // The cleaner!
       function fixText() {
-        text = textbox.property("value");
+        console.log("fixText()");
+        textbox = d3.select("#textbox");
+        // remove divs, rules, ems, figures, iframes
+        textbox.selectAll("div, hr, em, figure, iframe")
+          .remove();
+        html = textbox.html();
+        // removes spans
+        while (html.includes("<span")) {
+          let start = html.indexOf("<span");
+          let end = html.indexOf(">", start);
+          html = html.slice(0, start) + html.slice(end + 1);
+        }
+        html = html.replace(/<\/span>/g, "");
+        // removes style attributes
+        while (html.includes("style=\"")) {
+          let start = html.indexOf("style=\"");
+          let end = html.indexOf(">", start);
+          html = html.slice(0, start) + html.slice(end);
+        }
+        // correct subheadings
+        html = html.replace(/h2/g, "h1");
         // correct non-breaking spaces
-        text = text.replace(/ /g, " ");
-        // trim text and remove double spaces
-        text = text.replace(/  /g, " ");
+        html = html.replace(/ /g, " ")
+          .replace(/&nbsp;/g, " ");
+        // remove double spaces
+        html = html.replace(/  /g, " ");
+        // correct spaces before links
+        while (html.includes("&nbsp;<a")) {
+          html = html.replace("&nbsp;<a", " <a");
+        }
         // correct quotes and apostrophes
-        text = text.replace(/`/g, "\'")
+        html = html.replace(/`/g, "\'")
           .replace(/’/g, "\'")
           .replace(/“/g, "\"")
           .replace(/”/g, "\"");
         // correct dashes
-        text = text.replace(/ - /g, " — ")
+        html = html.replace(/ - /g, " — ")
           .replace(/ – /g, " — ");
         // correct ellipses
-        text = text.replace(/\.\.\./g, "…")
+        html = html.replace(/\.\.\./g, "…")
           .replace(/\.\./g, ".");
-        // replace with corrected text
-        textbox.property("value", text);
+        // clean tags
+        html = html.replace(/ >/g, ">");
+        textbox.html(html);
+        copyData(html);
       }
+
+      function copyData(html) {
+        d3.timeout(function() {
+          console.log("copyData()");
+          var bin = document.createElement("div")
+          // hide it
+          bin.innerHTML = html;
+          bin.style.position = "fixed";
+          bin.style.pointerEvents = "none";
+          bin.style.opacity = 0;
+          // detect style sheets
+          var activeSheets = Array.prototype.slice.call(document.styleSheets)
+            .filter(function(sheet) {
+              return !sheet.disabled;
+            });
+          // mount bin to DOM
+          document.body.appendChild(bin);
+          // copy to clipboard
+          window.getSelection().removeAllRanges();
+          var range = document.createRange();
+          range.selectNode(bin);
+          window.getSelection().addRange(range);
+          document.execCommand("copy");
+          for (var i = 0; i < activeSheets.length; i++) activeSheets[i].disabled = false;
+          document.body.removeChild(bin);
+          copyComplete();
+        }, 250);
+
+        function copyComplete() {
+          float = container
+            .append("div")
+              .attr("id", "float");
+          d3.xml("./resources/clipboard.svg")
+            .mimeType("image/svg+xml")
+            .get(function(error, data) {
+              float.node().appendChild(data.documentElement);
+              float.append("p")
+                .text("COPIED TO CLIPBOARD");
+              float.style("top", (parseFloat(container.style("height")) / 2) + "px");
+              float.style("pointer-events", "auto")
+                .on("click", function() {
+                  location.reload();
+                });
+              d3.select("button")
+                .style("pointer-events", "none");
+            });
+          float.transition()
+            .duration(500)
+            .style("opacity", 1);
+
+        }
+      };
     </script>
   </body>
 </html>
